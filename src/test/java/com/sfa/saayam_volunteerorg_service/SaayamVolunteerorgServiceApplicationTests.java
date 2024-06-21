@@ -1,10 +1,10 @@
-package com.saayamvolunteerorgservice.saayam_requestorg_service;
+package com.sfa.saayam_volunteerorg_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SaayamRequestorgServiceApplicationTests {
+class SaayamVolunteerorgServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
