@@ -19,3 +19,5 @@ Currently we are able to fetch the charity data from the Charity Navigator API. 
 - Spring Boot
 - Maven
 - Docker
+
+- *Note: to run this mmicroservice, make sure you have a database connection up and running for JDBC to work.
