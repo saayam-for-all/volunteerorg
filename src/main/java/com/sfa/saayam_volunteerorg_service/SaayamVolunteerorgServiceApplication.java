@@ -9,5 +9,4 @@ public class SaayamVolunteerorgServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SaayamVolunteerorgServiceApplication.class, args);
 	}
-
 }
