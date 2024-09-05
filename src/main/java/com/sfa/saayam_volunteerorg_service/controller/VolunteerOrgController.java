@@ -22,7 +22,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Fetch Volunteer Orgs", description = "Fetch volunteer organizations related to the request")
 public class VolunteerOrgController {
 
-    @Autowired VolunteerOrgRequestService volunteerOrgRequestService;
+    @Autowired 
+    VolunteerOrgRequestService volunteerOrgRequestService;
     @Autowired
     private RequestRepository requestRepository;
 

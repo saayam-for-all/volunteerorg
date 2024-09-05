@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Pagination</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .charity {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination button {
+            padding: 8px 12px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Charity Search</h1>
+    
+    <input type="text" id="searchTerm" placeholder="Enter search term (e.g., education)">
+    <button onclick="searchCharities()">Search</button>
+
+    <div id="results"></div>
+
+    <div class="pagination">
+        <button id="prevPage" onclick="changePage(-1)" disabled>Previous</button>
+        <span id="pageInfo">Page: 1</span>
+        <button id="nextPage" onclick="changePage(1)">Next</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let currentPage = 0;
+        let pageSize = 10; // Define how many results per page you want to display
+        let totalPages = 0;
+        let searchTerm = '';
+        let totalResults = 0;
+
+        function searchCharities() {
+            searchTerm = document.getElementById('searchTerm').value;
+            if (searchTerm) {
+                currentPage = 0; // Reset to first page on new search
+                fetchCharities();
+            } else {
+                alert("Please enter a search term");
+            }
+        }
+
+        function fetchCharities() {
+            const from = currentPage * pageSize; // Use `from` to calculate how many results to skip
+            const url = `http://localhost:8080/search?term=${searchTerm}&from=${from}`;
+
+            axios.get(url)
+                .then(response => {
+                    console.log(response.data);
+                    displayResults(response.data);
+                    updatePagination(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching charities:', error);
+                    alert('Error fetching charities, please check the console for details.');
+                });
+        }
+
+        function displayResults(data) {
+            const resultsContainer = document.getElementById('results');
+            console.log("Inside DISPLAY");
+            console.log(data.data.publicSearchFaceted.results);
+            resultsContainer.innerHTML = '';
+
+
+            if (data.data.publicSearchFaceted.results.length > 0) {
+                data.data.publicSearchFaceted.results.forEach(charity => {
+                    const charityDiv = document.createElement('div');
+                    charityDiv.className = 'charity';
+                    charityDiv.innerHTML = `
+                        <strong>Name:</strong> ${charity.ein}<br>
+                        <strong>Mission:</strong> ${charity.name || 'N/A'}<br>
+                        <strong>Cause:</strong> ${charity.mission || 'N/A'}<br>
+                        <strong>Location:</strong> ${charity.city}, ${charity.state}, ${charity.country}<br>
+                        <a href="${charity.organization_url}" target="_blank">View Charity Navigator Profile</a>
+                    `;
+                    resultsContainer.appendChild(charityDiv);
+                });
+            } else {
+                resultsContainer.innerHTML = '<p>No results found.</p>';
+            }
+        }
+
+        function updatePagination(data) {
+    const publicSearchFaceted = data?.data?.publicSearchFaceted; // Safely access publicSearchFaceted
+    if (!publicSearchFaceted) {
+        console.error('publicSearchFaceted is undefined');
+        return;
+    }
+
+    const totalResults = publicSearchFaceted?.result_count ?? 0;  // Use 0 as a default value
+    totalPages = Math.ceil(totalResults / pageSize);
+
+    // Update page info
+    document.getElementById('pageInfo').textContent = `Page: ${currentPage + 1}`;
+
+    // Enable/disable next/prev buttons
+    document.getElementById('prevPage').disabled = currentPage === 0;
+    document.getElementById('nextPage').disabled = currentPage >= totalPages - 1;
+}
+
+
+        function changePage(direction) {
+            currentPage += direction;
+            fetchCharities();
+        }
+    </script>
+
+</body>
+</html>
