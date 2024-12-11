@@ -19,10 +19,8 @@ public class CharityNavigatorService {
             .build();
     }
 
-    // Removed 'size' and added 'from' for pagination
     public CharityResponse searchCharities(String term, int from) {
-        // Updated GraphQL query to include only the 'from' parameter for pagination
-        String graphqlQuery = "{ \"query\": \"query PublicSearchFaceted($term: String!, $from: Int!) { publicSearchFaceted(term: $term, from: $from) { size from term result_count results { ein name mission organization_url charity_navigator_url encompass_score encompass_star_rating encompass_publication_date cause street street2 city state zip country highest_level_advisory encompass_rating_id } } }\", \"variables\": { \"term\": \"" + term + "\", \"from\": " + from + " } }";
+        String graphqlQuery = "{ \"query\": \"query PublicSearchFaceted($term: String!, $from: Int!) { publicSearchFaceted(term: $term, from: $from) { size from term result_count results { ein name mission cause street street2 city state zip country} } }\", \"variables\": { \"term\": \"" + term + "\", \"from\": " + from + " } }";
 
         String apiKey = "";
 
@@ -33,8 +31,7 @@ public class CharityNavigatorService {
                     .header("Stellate-Api-Token", apiKey)
                     .bodyValue(graphqlQuery)
                     .retrieve()
-                    .bodyToMono(CharityResponse.class)
-                    .doOnNext(r -> System.out.println("Received response: " + r.toString()));
+                    .bodyToMono(CharityResponse.class);
 
             return response.block();  // Blocking to return result synchronously
         } catch (WebClientResponseException e) {

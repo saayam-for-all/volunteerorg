@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@RestController
-@RequestMapping("/volunteerorg")
-@Tag(name = "Fetch Volunteer Orgs", description = "Fetch volunteer organizations related to the request")
+//@RestController
+//@RequestMapping("/volunteerorg")
+//@Tag(name = "Fetch Volunteer Orgs", description = "Fetch volunteer organizations related to the request")
 public class VolunteerOrgController {
 
     @Autowired 

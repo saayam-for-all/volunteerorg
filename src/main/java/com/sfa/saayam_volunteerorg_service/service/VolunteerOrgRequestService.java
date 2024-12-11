@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.sfa.saayam_volunteerorg_service.model.VolunteerOrganisation;
 
 
-@Service
+//@Service
 public class VolunteerOrgRequestService {
 
     public ArrayList<VolunteerOrganisation> getVolunteerOrganisationsByTopic(String topic, Pageable pageable){

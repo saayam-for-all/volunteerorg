@@ -2,7 +2,7 @@ package com.sfa.saayam_volunteerorg_service.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,19 +15,23 @@ import com.sfa.saayam_volunteerorg_service.service.CharityNavigatorService;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@ComponentScan(basePackages = "com.sfa.saayam_volunteerorg_service.service")
 public class CharityNavigatorController {
 
     private static final Logger logger = LoggerFactory.getLogger(CharityNavigatorController.class);
 
-    @Autowired
+    
     private CharityNavigatorService charityNavigatorService;
+    public CharityNavigatorController(CharityNavigatorService charityNavigatorService) {
+    	this.charityNavigatorService=charityNavigatorService;
+    }
 
-    // Updated to include 'from' parameter for pagination
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CharityResponse> searchCharities(@RequestParam String term,
                                                            @RequestParam(defaultValue = "0") int from) {
-        CharityResponse response = charityNavigatorService.searchCharities(term, from);
-        logger.info("Response: " + response);
+    	CharityResponse response=null;
+    	response = charityNavigatorService.searchCharities(term, from);
+
         return ResponseEntity.ok(response);
     }
 }
