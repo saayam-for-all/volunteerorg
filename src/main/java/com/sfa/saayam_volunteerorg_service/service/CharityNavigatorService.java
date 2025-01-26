@@ -22,7 +22,7 @@ public class CharityNavigatorService {
     public CharityResponse searchCharities(String term, int from) {
         String graphqlQuery = "{ \"query\": \"query PublicSearchFaceted($term: String!, $from: Int!) { publicSearchFaceted(term: $term, from: $from) { size from term result_count results { ein name mission cause street street2 city state zip country} } }\", \"variables\": { \"term\": \"" + term + "\", \"from\": " + from + " } }";
 
-        String apiKey = "";
+        String apiKey = "stl8_0c83d84ca5692fce63cc171f00f6bdfce13e4bfc11775daa52b77d9c711e2c7a";
 
         try {
             Mono<CharityResponse> response = webClient.post()

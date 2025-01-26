@@ -29,9 +29,10 @@ public class CharityNavigatorController {
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CharityResponse> searchCharities(@RequestParam String term,
                                                            @RequestParam(defaultValue = "0") int from) {
+    	logger.atInfo().addKeyValue("term", term).log("Search started for term.");
     	CharityResponse response=null;
     	response = charityNavigatorService.searchCharities(term, from);
-
+    	logger.atInfo().log("Successfully returning item");
         return ResponseEntity.ok(response);
     }
 }
